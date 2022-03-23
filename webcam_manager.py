@@ -11,15 +11,19 @@ stream = cv2.VideoCapture(0)
 prev_frame_time = 0
 new_frame_time = 0
 
-grabbed = False
+first_iter = True
 
-backSub = cv2.createBackgroundSubtractorMOG2()
+backgroundImage = None
+backgroundAvailable = False
 
-while not grabbed:
-    input("Premi per prendere una foto del background")
-    (grabbed, backgroundFrame) = stream.read()
-
-cv2.imshow("Background frame", backgroundFrame)
+blur = 21
+canny_low = 15
+canny_high = 150
+min_area = 0.0005
+max_area = 0.95
+dilate_iter = 10
+erode_iter = 10
+mask_color = (0.0,0.0,0.0)
 
 while True:
     (grabbed, frame) = stream.read()
@@ -33,12 +37,9 @@ while True:
     fps = math.floor(fps)
     prev_frame_time = new_frame_time
 
-    #frame = imutils.resize(frame, width=400)
-    fgMask = cv2.subtract(frame, backgroundFrame)
-
     cv2.putText(frame, f"{fps}", (10, 30), cv2.FONT_HERSHEY_COMPLEX, 0.8, (120, 0, 0), 2)
 
-    cv2.imshow("Frame", fgMask)
+    cv2.imshow("Frame", frame)
     if(cv2.waitKey(1) & 0xFF == ord('q')):
         break
 
