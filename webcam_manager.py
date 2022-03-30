@@ -14,7 +14,7 @@ stream = cv2.VideoCapture(0)
 prev_frame_time = 0
 new_frame_time = 0
 
-model = torch.hub.load('ultralytics/yolov5', 'yolov5s', pretrained=True)
+model = torch.hub.load('ultralytics/yolov5', 'yolov5n', pretrained=True)
 model.eval()
 
 while True:
