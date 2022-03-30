@@ -1,8 +1,11 @@
+from typing import Type
 import numpy as np
-import imutils
 import cv2
 import time
 import math
+import torch
+import pandas as pd
+import tqdm
 
 #inizializzazione video
 
@@ -11,19 +14,8 @@ stream = cv2.VideoCapture(0)
 prev_frame_time = 0
 new_frame_time = 0
 
-first_iter = True
-
-backgroundImage = None
-backgroundAvailable = False
-
-blur = 21
-canny_low = 15
-canny_high = 150
-min_area = 0.0005
-max_area = 0.95
-dilate_iter = 10
-erode_iter = 10
-mask_color = (0.0,0.0,0.0)
+model = torch.hub.load('ultralytics/yolov5', 'yolov5s', pretrained=True)
+model.eval()
 
 while True:
     (grabbed, frame) = stream.read()
@@ -32,13 +24,24 @@ while True:
         print("Source video non disponibile.")
         break
 
-    new_frame_time = time.time()
-    fps = 1/(new_frame_time-prev_frame_time)
-    fps = math.floor(fps)
-    prev_frame_time = new_frame_time
+    result = model(frame)
+    pandas = result.pandas()
 
-    cv2.putText(frame, f"{fps}", (10, 30), cv2.FONT_HERSHEY_COMPLEX, 0.8, (120, 0, 0), 2)
+    if len(pandas.xyxy) > 0:
+        for res in pandas.xyxy: #per ogni bounding box
+            for i in range(len(res)):
+                pt1 = (int(res["xmin"][i]), int(res["ymin"][i]))
+                pt2 = (int(res["xmax"][i]), int(res["ymax"][i]))
 
+                cv2.rectangle(frame, pt1, pt2, color=(255,0,0), thickness=2)
+
+                textP1 = (pt1[0] + pt2[0]) // 2
+                textP2 = (pt1[1] + pt2[1]) // 2
+
+                text = res["name"][i]
+
+                cv2.putText(frame, text, (textP1, textP2), cv2.FONT_HERSHEY_PLAIN, 0.8, (0,255,0), 2)
+    
     cv2.imshow("Frame", frame)
     if(cv2.waitKey(1) & 0xFF == ord('q')):
         break
