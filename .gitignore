@@ -131,3 +131,5 @@ dmypy.json
 # Dataset ignore
 ./training/dataset
 ./training/yolov5
+
+*.pt
