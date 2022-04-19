@@ -41,7 +41,23 @@ echo "IMAGE RESIZE 1280x720 -> 640x360..."
 
 python3 resizer.py
 
-echo "EDITING DONE."
+echo "IMAGE RESIZE DONE."
+echo "######################"
+echo
+echo "######################"
+echo "IMAGE LUMINANCE RANDOMIZER..."
+
+python3 luminance_randomizer.py
+
+echo "LUMINANCE RANDOMIZING DONE."
+echo "######################"
+echo
+echo "######################"
+echo "IMAGE GAUSSIAN NOISE..."
+
+python3 gaussian_noise.py
+
+echo "GAUSSIAN NOISING DONE."
 echo "######################"
 
 echo

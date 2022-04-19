@@ -20,7 +20,7 @@ prev_frame_time = 0
 new_frame_time = 0
 
 #model = torch.hub.load('ultralytics/yolov5', 'yolov5m6', pretrained=True)
-model = torch.hub.load('ultralytics/yolov5', 'custom', path='best.pt')
+model = torch.hub.load('ultralytics/yolov5', 'custom', path='yolov5_l_100epoch.pt')
 model.eval()
 
 while True:
@@ -30,6 +30,7 @@ while True:
         print("Source video non disponibile.")
         break
 
+    frame = cv2.resize(frame, (640,360))
     frame = cv2.flip(frame, 1)
 
     result = model(frame)
