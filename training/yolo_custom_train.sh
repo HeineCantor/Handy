@@ -27,4 +27,4 @@ fi
 
 cd yolov5
 
-python3 train.py --img 640 --batch 1 --epochs 100 --data '../dataset/data.yaml' --weights $NET
+python3 train.py --img 640 --batch 32 --epochs 100 --data '../dataset/data.yaml' --weights $NET
