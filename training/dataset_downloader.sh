@@ -1,41 +1,68 @@
 #!/bin/sh
 
+if [ -z "$1" ]; then
+    DATASET="HANDS"
+else
+    DATASET="$1"
+fi
+
 if [ -z "$(ls -A dataset)" ]; then
 
-echo "######################"
-echo "DOWNLOADING DATASET..."
+    
+    echo "######################"
+    echo "DOWNLOADING DATASET..."
 
-mkdir dataset
-curl -L "https://public.roboflow.com/ds/XPzvgz2uFU?key=BA5OO8Eay6" > roboflow.zip
-unzip roboflow.zip -d dataset
-rm roboflow.zip
+    
 
-echo "DATASET DOWNLOADED."
-echo "######################"
+    mkdir dataset
+    
+    if [ $DATASET = "egohands" ]; then
+        curl -L "https://public.roboflow.com/ds/XPzvgz2uFU?key=BA5OO8Eay6" > roboflow.zip
+        unzip roboflow.zip -d dataset
+        rm roboflow.zip
+    else
+        gdown 1FjOtDttsO9U5n6l9fTi681su0B_qC5me
+        unzip dataset.zip
+        rm dataset.zip
+    fi
+
+    echo "DATASET DOWNLOADED."
+    echo "######################"
 
 fi
 
-echo "######################"
-echo "4 TO 1 CLASS EDITING..."
+if [ $DATASET = "egohands" ]; then
 
-cd dataset
+    echo "######################"
+    echo "4 TO 1 CLASS EDITING..."
 
-#edit data.yaml
+    cd dataset
 
-echo train: ../dataset/train/images > data.yaml
-echo val: ../dataset/valid/images >> data.yaml
-echo >> data.yaml
-echo nc: 1 >> data.yaml
-echo names: ['hand'] >> data.yaml
+    #edit data.yaml
 
-cd ..
+    echo train: ../dataset/train/images > data.yaml
+    echo val: ../dataset/valid/images >> data.yaml
+    echo >> data.yaml
+    echo nc: 1 >> data.yaml
+    echo names: ['hand'] >> data.yaml
+
+    cd ..
+    
+    cd preprocessing
+
+    python3 4_to_1_labels.py
+    
+    cd ..
+    
+    echo "EDITING DONE."
+    echo "######################"
+    echo
+    
+fi
+
 cd preprocessing
 
-python3 4_to_1_labels.py
 
-echo "EDITING DONE."
-echo "######################"
-echo
 echo "######################"
 echo "IMAGE RESIZE 1280x720 -> 640x360..."
 

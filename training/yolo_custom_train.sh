@@ -27,4 +27,14 @@ fi
 
 cd yolov5
 
-python3 train.py --img 640 --batch 32 --epochs 100 --data '../dataset/data.yaml' --weights $NET
+if [ -z "$2" ]; then
+    MODE="SINGLE"
+else
+    MODE="MULTI"
+fi
+
+if [ $MODE = "SINGLE" ]; then
+    python3 train.py --img 640 --batch 32 --epochs 50 --data '../dataset/data.yaml' --weights $NET
+else
+    python3 -m torch.distributed.launch --nproc_per_node 2 train.py --img 640 --batch 32 --epochs 50 --data '../dataset/data.yaml' --weights $NET
+fi

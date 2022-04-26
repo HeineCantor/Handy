@@ -12,5 +12,7 @@ for path in DATASET_PATH_LIST:
     for file in tqdm(os.listdir(fullPath)):
         filePath = os.path.join(fullPath, file)
         image = cv2.imread(filePath)
-        image = cv2.resize(image, newSize)
-        cv2.imwrite(filePath, image)
+        w, h, ch = image.shape
+        if (w != newSize[0] and h != newSize[1]):
+            image = cv2.resize(image, newSize)
+            cv2.imwrite(filePath, image)
