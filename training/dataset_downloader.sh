@@ -66,7 +66,7 @@ cd preprocessing
 echo "######################"
 echo "IMAGE RESIZE 1280x720 -> 640x360..."
 
-python3 resizer.py
+#python3 resizer.py
 
 echo "IMAGE RESIZE DONE."
 echo "######################"
@@ -82,7 +82,7 @@ echo
 echo "######################"
 echo "IMAGE GAUSSIAN NOISE..."
 
-python3 gaussian_noise.py
+#python3 gaussian_noise.py
 
 echo "GAUSSIAN NOISING DONE."
 echo "######################"

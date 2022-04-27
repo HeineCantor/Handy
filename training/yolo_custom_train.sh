@@ -34,7 +34,7 @@ else
 fi
 
 if [ $MODE = "SINGLE" ]; then
-    python3 train.py --img 640 --batch 32 --epochs 50 --data '../dataset/data.yaml' --weights $NET
+    python3 train.py --img 640 --batch 2 --epochs 15 --data '../dataset/data.yaml' --weights $NET
 else
     python3 -m torch.distributed.launch --nproc_per_node 2 train.py --img 640 --batch 32 --epochs 50 --data '../dataset/data.yaml' --weights $NET
 fi
