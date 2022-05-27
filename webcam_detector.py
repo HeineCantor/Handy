@@ -2,13 +2,14 @@ import numpy as np
 import cv2
 import torch
 import pandas as pd
+import sys
 
 TEXT_FONT = cv2.FONT_HERSHEY_PLAIN
 TEXT_SCALE = 1.2
 TEXT_THICKNESS = 1
 TEXT_COLOR = (0, 255, 0)
 
-DEBUG = True
+DEBUG = False
 
 #inizializzazione video
 
@@ -17,7 +18,9 @@ stream = cv2.VideoCapture(0)
 prev_frame_time = 0
 new_frame_time = 0
 
-model = torch.hub.load('ultralytics/yolov5', 'custom', path='yoloM25newpre.pt')
+weight_path = sys.argv[1]
+
+model = torch.hub.load('ultralytics/yolov5', 'custom', path=weight_path)
 model.eval()
 
 # Idea: mandare in input alla rete l'immagine filtrata (passa-basso / passa-banda)
