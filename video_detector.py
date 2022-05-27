@@ -12,12 +12,12 @@ DEBUG = True
 
 #inizializzazione video
 
-stream = cv2.VideoCapture(0)
+stream = cv2.VideoCapture('video_name.mp4')
 
 prev_frame_time = 0
 new_frame_time = 0
 
-model = torch.hub.load('ultralytics/yolov5', 'custom', path='yoloM25newpre.pt')
+model = torch.hub.load('ultralytics/yolov5', 'custom', path='yoloL30newpre.pt')
 model.eval()
 
 # Idea: mandare in input alla rete l'immagine filtrata (passa-basso / passa-banda)
@@ -29,9 +29,7 @@ while True:
         print("Source video non disponibile.")
         break
 
-    frame = cv2.flip(frame, 1)
-    if DEBUG:
-        originalFrame = frame.copy()
+    #frame = cv2.flip(frame, 1)
 
     result = model(frame)
     pandas = result.pandas()
@@ -72,10 +70,6 @@ while True:
                     cv2.putText(frame, className, (textP1, textP2), TEXT_FONT, TEXT_SCALE, TEXT_COLOR, TEXT_THICKNESS)
     
     cv2.imshow("Frame", frame)
-
-    if DEBUG:
-        cv2.imshow("Original frame", originalFrame)
-        
     if(cv2.waitKey(1) & 0xFF == ord('q')):
         break
 

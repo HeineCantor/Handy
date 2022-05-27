@@ -16,14 +16,7 @@ case $1 in
         *) echo "Nessuna rete specificata per pesi di pretrain. Di default c'è 'yolov5s.pt'."
 esac
 
-if [ -z "$(ls -A yolov5)" ]; then
-
-git clone https://github.com/ultralytics/yolov5  # clone
-cd yolov5
-pip install -r requirements.txt  # install
-cd ..
-
-fi
+./yolo_clone.sh
 
 cd yolov5
 
